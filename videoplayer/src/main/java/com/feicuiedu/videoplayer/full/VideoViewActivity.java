@@ -14,6 +14,7 @@ import com.feicuiedu.videoplayer.R;
 import java.util.Locale;
 
 import io.vov.vitamio.MediaPlayer;
+import io.vov.vitamio.Vitamio;
 import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
@@ -53,12 +54,14 @@ public class VideoViewActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawableResource(android.R.color.black);
         // 设置当前内容视图
         setContentView(R.layout.activity_video_view);
+        //注意：Vitamio使用时一定要初始化
+        Vitamio.isInitialized(this);
     }
 
     @Override public void onContentChanged() {
         super.onContentChanged();
         // 1. 我们要初始化视图
-        ininBufferViews();
+        initBufferViews();
         // 2. 我们要初始化VideoView
         initVideoView();
     }
@@ -73,7 +76,7 @@ public class VideoViewActivity extends AppCompatActivity {
         videoView.stopPlayback();
     }
 
-    private void ininBufferViews() {
+    private void initBufferViews() {
         tvBufferInfo = (TextView) findViewById(R.id.tvBufferInfo);
         ivLoading = (ImageView) findViewById(R.id.ivLoading);
         tvBufferInfo.setVisibility(View.INVISIBLE);
@@ -82,8 +85,8 @@ public class VideoViewActivity extends AppCompatActivity {
 
     private void initVideoView() {
         videoView = (VideoView) findViewById(R.id.videoView);
-        // 控制(暂停,播放,快进等)
-        videoView.setMediaController(new MediaController(this));
+        // 控制(暂停,播放,快进等) ,这里使用自定义的控制器
+        videoView.setMediaController(new CustomMediaController(this));
         videoView.setKeepScreenOn(true);
         videoView.requestFocus();
         // 资源准备监听处理
