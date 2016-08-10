@@ -2,5 +2,9 @@
     {
         "merged": "C:\\Android\\Project\\VideoNews\\vitamio\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-ldpi-v4\\ic_launcher.png",
         "source": "C:\\Android\\Project\\VideoNews\\vitamio\\build\\intermediates\\bundles\\debug\\res\\drawable-ldpi-v4\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\Android\\AndroidStudioProject\\VideoNews\\vitamio\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-ldpi-v4\\ic_launcher.png",
+        "source": "E:\\Android\\AndroidStudioProject\\VideoNews\\vitamio\\build\\intermediates\\bundles\\debug\\res\\drawable-ldpi-v4\\ic_launcher.png"
     }
 ]
