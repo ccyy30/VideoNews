@@ -1,12 +1,26 @@
 package com.feicuiedu.videoplayer.part;
 
 import android.content.Context;
+import android.graphics.PixelFormat;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.feicuiedu.videoplayer.R;
+import com.feicuiedu.videoplayer.full.VideoViewActivity;
 
+import java.io.IOException;
+
+import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.Vitamio;
 
 /**
@@ -25,6 +39,27 @@ import io.vov.vitamio.Vitamio;
  * <p/>
  */
 public class SimpleVideoView extends FrameLayout {
+
+    private static final int PROGRESS_MAX = 1000;
+
+    // 用来更新播放进度的handler
+    private final Handler handler = new Handler(){
+        @Override public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(isPlaying){
+                //获取当前播放的进度
+                long current = mediaPlayer.getCurrentPosition();
+                //获取总进度
+                long duration = mediaPlayer.getDuration();
+                //获取进度条目标进度
+                int progress = (int) (current * PROGRESS_MAX / duration);
+                // 更新当前播放进度的进度条
+                progressBar.setProgress(progress);
+                // 每200毫秒，再更新一次
+                handler.sendEmptyMessageDelayed(0, 200);
+            }
+        }
+    };
 
     public SimpleVideoView(Context context) {
         this(context, null);
@@ -49,7 +84,64 @@ public class SimpleVideoView extends FrameLayout {
 
     // 对当前自定义视图做一些初始化工作
     private void initView() {
+        // surfaceview的初始化
+        initSurfaceView();
+        // 控制视图的初始化
+        initControllerView();
+    }
 
+    //预览图片
+    private ImageView ivPreview;
+    //播放/暂停
+    private ImageButton ibToggle;
+    //进度条
+    private ProgressBar progressBar;
+
+    //初始化控制视图
+    private void initControllerView() {
+        // 预览图片，默认是盖在surfaceview前面的
+        // 预览图片
+        ivPreview = (ImageView) findViewById(R.id.ivPreview);
+        // 播放/暂停 按钮
+        ibToggle = (ImageButton) findViewById(R.id.btnToggle);
+        ibToggle.setOnClickListener(new OnClickListener() {
+            @Override public void onClick(View v) {
+                //播放和暂停
+                if (mediaPlayer.isPlaying()) {
+                    pauseMediaPlayer();
+                } else if (isPrepared) {
+                    startMediaPlayer();
+                } else {
+                    Toast.makeText(getContext(), "Can't play now !", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        // 进度条
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        //要控制进度条，设置最大值
+        progressBar.setMax(PROGRESS_MAX);
+        // 全屏按钮
+        ImageButton btnFullScreen = (ImageButton) findViewById(R.id.btnFullScreen);
+        btnFullScreen.setOnClickListener(new OnClickListener() {
+            @Override public void onClick(View v) {
+                //切换成全屏播放的Activity，使用VideoView播放
+                VideoViewActivity.open(getContext(), videoPath);
+            }
+        });
+
+    }
+
+    //显示视频的控件
+    private SurfaceView surfaceView;
+    private SurfaceHolder surfaceHolder;
+
+    //初始化surfaceview
+    private void initSurfaceView() {
+        surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
+        //这里surface由于是在activity处于onResume状态时显示的，所以已经创建结束，所以就不需要再addCallback了
+        surfaceHolder = surfaceView.getHolder();
+        // 注意：Vitamio在使用SurfaceView播放时,要format
+        surfaceHolder.setFormat(PixelFormat.RGBA_8888);
     }
 
     /** 设置播放谁(一定要在onResume方法调用前来调用): */
@@ -69,28 +161,83 @@ public class SimpleVideoView extends FrameLayout {
         releaseMediaPlayer();
     }
 
+    //媒体播放器
+    private MediaPlayer mediaPlayer;
+    //记录播放器是否准备完毕
+    private boolean isPrepared;
+
     // 初始化MediaPlayer, 设置一系列的监听
     private void initMediaPlayer() {
-
+        mediaPlayer = new MediaPlayer(getContext());
+        mediaPlayer.setDisplay(surfaceHolder);
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override public void onPrepared(MediaPlayer mp) {
+                isPrepared = true;
+                // 准备好后，自动开始播放
+                startMediaPlayer();
+            }
+        });
+        mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+            @Override public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                //如果媒体播放文件已经打开成功，what是状态
+                if (what == MediaPlayer.MEDIA_INFO_FILE_OPEN_OK) {
+                    // 注意：Vitamio5.0 要对音频进行设置才能播放
+                    // 否则，不能播放在线视频
+                    long bufferSize = mediaPlayer.audioTrackInit();
+                    mediaPlayer.audioInitedOk(bufferSize);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
+
+    //记录是否正在播放状态
+    private boolean isPlaying;
 
     // 开始MediaPlayer, 同时更新UI状态
     private void startMediaPlayer(){
-
+        if (isPrepared) {
+            mediaPlayer.start();
+        }
+        isPlaying = true;
+        //每次播放时都需要发送消息给handler控制进度条进度
+        handler.sendEmptyMessage(0);
+        // 播放和暂停按钮图像的更新
+        ibToggle.setImageResource(R.drawable.ic_pause);
     }
 
     // 准备MediaPlayer, 同时更新UI状态
     private void prepareMediaPlayer() {
-
+        try {
+            mediaPlayer.reset();
+            // 设置资源
+            mediaPlayer.setDataSource(videoPath);
+            mediaPlayer.setLooping(true);
+            // 异步准备
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // 暂停mediaPlayer, 同时更新UI状态
     private void pauseMediaPlayer() {
-
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+        isPlaying = false;
+        //暂停播放需要发消息给handler移除进度条的控制
+        handler.removeMessages(0);
+        // 播放和暂停按钮图像的更新
+        ibToggle.setImageResource(R.drawable.ic_play_arrow);
     }
 
     // 释放mediaPlayer, 同时更新UI状态
     private void releaseMediaPlayer() {
-
+        mediaPlayer.release();
+        mediaPlayer = null;
+        isPlaying = false;
+        isPrepared = false;
     }
 }

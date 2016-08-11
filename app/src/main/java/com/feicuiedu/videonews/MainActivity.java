@@ -1,5 +1,6 @@
 package com.feicuiedu.videonews;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -24,6 +25,15 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    //点击我的收藏
+    @OnClick(R.id.btnLikes)
+    public void demoLikes(){
+        // 进入部分播放Activity
+        Intent intent = new Intent(this, PartPlayActivity.class);
+        startActivity(intent);
+    }
+
+    //点击本地视频
     @OnClick(R.id.btnLocal)
     public void demoPlay(){
         // 开启VideoViewActivity进行视频播放
