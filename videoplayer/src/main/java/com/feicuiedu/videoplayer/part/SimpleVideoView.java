@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -177,6 +178,21 @@ public class SimpleVideoView extends FrameLayout {
                 startMediaPlayer();
             }
         });
+
+        //视频播放时由于会画面宽高不适配产生失真效果，所以需要根据视频宽高比例调整surfaceview的宽高
+        mediaPlayer.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+            @Override public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+                // 根据宽的数据,去适配高的数据,宽度还是不动，调整高度
+                int videoWidth = surfaceView.getWidth();
+                int videoHeight = videoWidth * height/width;
+                // 重置surfaceview宽高
+                ViewGroup.LayoutParams layoutParams = surfaceView.getLayoutParams();
+                layoutParams.width = videoWidth;
+                layoutParams.height = videoHeight;
+                surfaceView.setLayoutParams(layoutParams);
+            }
+        });
+
         mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
             @Override public boolean onInfo(MediaPlayer mp, int what, int extra) {
                 //如果媒体播放文件已经打开成功，what是状态
