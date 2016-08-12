@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,12 +74,14 @@ public class LocalVideoFragment extends Fragment implements LoaderManager.Loader
                 MediaStore.Video.Media.DATA, // 视频文件路径
                 MediaStore.Video.Media.DISPLAY_NAME, // 视频名称
         };
+        Log.i("loader","ok");
         return new CursorLoader(getContext(),
                 MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                 projection,null,null,null);
     }
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.i("onLoadFinished",data.getCount()+"");
         //相当于addData函数，将数据添加到适配器中
         localVideoAdapter.swapCursor(data);
     }
