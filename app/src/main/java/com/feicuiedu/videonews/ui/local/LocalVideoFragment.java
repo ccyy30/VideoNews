@@ -36,7 +36,6 @@ import butterknife.Unbinder;
 public class LocalVideoFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private Unbinder unbinder;
-
     @BindView(R.id.gridView) GridView gridView;
 
     private LocalVideoAdapter localVideoAdapter;

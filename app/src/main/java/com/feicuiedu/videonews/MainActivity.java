@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.feicuiedu.videonews.ui.local.LocalVideoFragment;
+import com.feicuiedu.videonews.ui.news.NewsFragment;
 import com.feicuiedu.videoplayer.full.VideoViewActivity;
 
 import butterknife.BindView;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         @Override public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new LocalVideoFragment();
+                    return new NewsFragment();
                 case 1:
                     return new LocalVideoFragment();
                 case 2:
