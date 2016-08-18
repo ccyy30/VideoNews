@@ -19,7 +19,7 @@ public class BombClient {
         return sInstance;
     }
 
-    private VideoApi videoApi;
+    private NewsApi newsApi;
 
     private BombClient() {
 
@@ -43,10 +43,10 @@ public class BombClient {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        videoApi = retrofit.create(VideoApi.class);
+        newsApi = retrofit.create(NewsApi.class);
     }
 
-    public VideoApi getVideoApi() {
-        return videoApi;
+    public NewsApi getNewsApi() {
+        return newsApi;
     }
 }

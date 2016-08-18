@@ -1,7 +1,7 @@
 package com.feicuiedu.videonews.bombapi.entity;
 
 
-public class VideoEntity extends BaseEntity{
+public class NewsEntity extends BaseEntity{
 
     private String newsTitle; // 新闻标题
 

@@ -13,7 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 显示在线新闻列表的fragment
+ * 视频新闻列表页面
  */
 public class NewsFragment extends Fragment {
 
@@ -31,6 +31,12 @@ public class NewsFragment extends Fragment {
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        // 首次进入，自动刷新
+        newsListView.post(new Runnable() {
+            @Override public void run() {
+                newsListView.autoRefresh();
+            }
+        });
     }
 
     @Override public void onDestroyView() {

@@ -35,5 +35,5 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.vinaysshenoy:mugen:1.0.2'
-
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
