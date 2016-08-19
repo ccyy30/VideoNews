@@ -22,6 +22,8 @@
 
         <activity android:name=".PartPlayActivity">
         </activity>
+        <activity android:name=".ui.comments.CommentsActivity">
+        </activity>
     </application>
 
 </manifest>

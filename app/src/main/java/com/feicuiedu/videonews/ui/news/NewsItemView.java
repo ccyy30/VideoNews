@@ -29,6 +29,7 @@ public class NewsItemView extends BaseItemView<NewsEntity> {
     @BindView(R.id.tvCreatedAt) TextView tvCreatedAt;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.ivPlay) ImageView ivPlay;
+    private NewsEntity newsEntity;
 
     public NewsItemView(Context context) {
         super(context);
@@ -40,6 +41,8 @@ public class NewsItemView extends BaseItemView<NewsEntity> {
     }
 
     @Override protected void bindModel(NewsEntity newsEntity) {
+        //保存实体数据
+        this.newsEntity = newsEntity;
         // 初始视图状态
         tvNewsTitle.setVisibility(View.VISIBLE);
         ivPreview.setVisibility(View.VISIBLE);
@@ -56,6 +59,6 @@ public class NewsItemView extends BaseItemView<NewsEntity> {
 
     @OnClick(R.id.tvCreatedAt)
     public void navigateToComments(){
-        CommentsActivity.open(getContext());
+        CommentsActivity.open(getContext(),newsEntity);
     }
 }

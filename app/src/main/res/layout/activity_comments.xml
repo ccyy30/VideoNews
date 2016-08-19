@@ -14,7 +14,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         >
 
-        <feicuiedu.com.videonews.ui.comments.TitleTextView
+        <com.feicuiedu.videonews.ui.comments.TitleTextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,14 +26,14 @@
             android:marqueeRepeatLimit="marquee_forever"/>
     </android.support.v7.widget.Toolbar>
 
-    <feicuiedu.com.videoplayer.part.SimpleVideoPlayer
+    <com.feicuiedu.videoplayer.part.SimpleVideoView
         android:id="@+id/simpleVideoPlayer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_300"
         android:background="@color/black"/>
 
-    <feicuiedu.com.videonews.ui.comments.CommentsListView
-        android:id="@+id/commentsListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <!--<feicuiedu.com.videonews.ui.comments.CommentsListView-->
+        <!--android:id="@+id/commentsListView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
 </LinearLayout>
