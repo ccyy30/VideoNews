@@ -5,16 +5,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.feicuiedu.videonews.R;
+import com.feicuiedu.videonews.bombapi.BombClient;
+import com.feicuiedu.videonews.bombapi.BombConst;
+import com.feicuiedu.videonews.bombapi.NewsApi;
+import com.feicuiedu.videonews.bombapi.entity.CommentsEntity;
 import com.feicuiedu.videonews.bombapi.entity.NewsEntity;
+import com.feicuiedu.videonews.bombapi.other.InQuery;
+import com.feicuiedu.videonews.bombapi.result.QueryResult;
 import com.feicuiedu.videonews.commons.CommonUtils;
 import com.feicuiedu.videoplayer.part.SimpleVideoView;
 import com.google.gson.Gson;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * 新闻评论页面,主要包括三个部分:
@@ -47,6 +59,28 @@ public class CommentsActivity extends AppCompatActivity {
         Gson gson = new Gson();
         newsEntity = gson.fromJson(news, NewsEntity.class);
         setContentView(R.layout.activity_comments);
+
+        //以下测试获取新闻评论数据
+        NewsApi newsApi = BombClient.getsInstance().getNewsApi();
+
+        String newsId = newsEntity.getObjectId();
+        InQuery where = new InQuery(BombConst.TABLE_NEWS,BombConst.FIELD_NEWS,newsId);
+        Call<QueryResult<CommentsEntity>> call = newsApi.getComments(3,0,where);
+        call.enqueue(new Callback<QueryResult<CommentsEntity>>() {
+            @Override
+            public void onResponse(Call<QueryResult<CommentsEntity>> call, Response<QueryResult<CommentsEntity>> response) {
+                List<CommentsEntity> list = response.body().getResults();
+                for(int x = 0; x < list.size(); x++){
+                    Log.i("TAG",list.get(x).getContent()+","+list.get(x).getAuthor().getUsername()+","+
+                    list.get(x).getObjectId());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<QueryResult<CommentsEntity>> call, Throwable t) {
+                Log.i("TAG","error");
+            }
+        });
     }
 
     @BindView(R.id.toolbar)

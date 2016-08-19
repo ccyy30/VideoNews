@@ -1,6 +1,8 @@
 package com.feicuiedu.videonews.bombapi;
 
+import com.feicuiedu.videonews.bombapi.entity.CommentsEntity;
 import com.feicuiedu.videonews.bombapi.entity.NewsEntity;
+import com.feicuiedu.videonews.bombapi.other.InQuery;
 import com.feicuiedu.videonews.bombapi.result.QueryResult;
 
 import retrofit2.Call;
@@ -18,4 +20,14 @@ public interface NewsApi {
     @GET("1/classes/News?order=-createAt")
     Call<QueryResult<NewsEntity>> getVideoNewsList(@Query("limit") int limit, @Query("skip") int skip);
 
+    /** 获取评论
+     *  include参数是bomb服务器要求传递的需要获取详细信息的Pointer的字段描述
+     *  author表示要获取用户数据
+     *  InQuery where是请求服务器时要求传递的查询条件
+     * */
+    @GET("1/classes/Comments?include=author&order=-createdAt")
+    Call<QueryResult<CommentsEntity>> getComments(
+            @Query("limit") int limit,
+            @Query("skip") int skip,
+            @Query("where") InQuery where);
 }
