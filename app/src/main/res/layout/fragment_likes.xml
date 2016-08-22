@@ -74,7 +74,7 @@
         android:layout_height="@dimen/size_1"
         android:background="@color/pink"/>
 
-    <feicuiedu.com.videonews.ui.likes.LikesListView
+    <com.feicuiedu.videonews.ui.likes.LikesListView
         android:layout_marginTop="@dimen/lay_8"
         android:id="@+id/likesListView"
         android:layout_width="match_parent"

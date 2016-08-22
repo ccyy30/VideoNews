@@ -10,7 +10,7 @@ public class InQuery {
     private final String className;
     private final String objectId;
 
-    public InQuery(String field, String className, String objectId) {
+    public InQuery(String className,String field, String objectId) {
         this.field = field;
         this.className = className;
         this.objectId = objectId;

@@ -64,11 +64,14 @@ public class CommentsActivity extends AppCompatActivity {
         NewsApi newsApi = BombClient.getsInstance().getNewsApi();
 
         String newsId = newsEntity.getObjectId();
+        Log.i("TAG",newsId);
         InQuery where = new InQuery(BombConst.TABLE_NEWS,BombConst.FIELD_NEWS,newsId);
+        Log.i("TAG",where.toString());
         Call<QueryResult<CommentsEntity>> call = newsApi.getComments(3,0,where);
         call.enqueue(new Callback<QueryResult<CommentsEntity>>() {
             @Override
             public void onResponse(Call<QueryResult<CommentsEntity>> call, Response<QueryResult<CommentsEntity>> response) {
+                Log.i("TAG",response+"");
                 List<CommentsEntity> list = response.body().getResults();
                 for(int x = 0; x < list.size(); x++){
                     Log.i("TAG",list.get(x).getContent()+","+list.get(x).getAuthor().getUsername()+","+
