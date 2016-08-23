@@ -80,12 +80,12 @@ public class CommentsActivity extends AppCompatActivity implements EditCommentFr
         // 设置toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Log.i("DEBUG",newsEntity.getObjectId());
         tvTitle.setText(newsEntity.getNewsTitle());
+
         // 告诉评论列表视图，针对哪一条新闻去获取评论数据
         commentsListView.setNewsId(newsEntity.getObjectId());
         commentsListView.autoRefresh();
-        Log.i("DEBUG","1");
+
         // 设置播放源
         String videoPath = CommonUtils.encodeUrl(newsEntity.getVideoUrl());
         simpleVideoView.setVideoPath(videoPath);

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.feicuiedu.videonews.R;
+import com.feicuiedu.videoplayer.list.MediaPlayerManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,8 +40,26 @@ public class NewsFragment extends Fragment {
         });
     }
 
+    @Override public void onResume() {
+        super.onResume();
+        // 当Fragment,onResume，MediaPlayer进行初始化
+        MediaPlayerManager.getsInstance(getContext()).onResume();
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        // 当Fragment,onPause，MediaPlayer进行release
+        MediaPlayerManager.getsInstance(getContext()).onPause();
+    }
+
     @Override public void onDestroyView() {
         super.onDestroyView();
         ((ViewGroup)view.getParent()).removeView(view);
+    }
+
+    @Override public void onDestroy() {
+        super.onDestroy();
+        // 当Fragment,onDestroy，清除所有监听
+        MediaPlayerManager.getsInstance(getContext()).removeAllListeners();
     }
 }

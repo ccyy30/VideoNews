@@ -14,7 +14,7 @@
         android:layout_height="@dimen/size_300"
         android:background="@color/black">
 
-        <TextureView
+        <com.feicuiedu.videoplayer.list.ScalableTextureView
             android:id="@+id/textureView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_300"/>

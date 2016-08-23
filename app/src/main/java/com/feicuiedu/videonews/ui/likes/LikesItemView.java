@@ -59,6 +59,7 @@ public class LikesItemView extends BaseItemView<NewsEntity> {
         CommentsActivity.open(getContext(), newsEntity);
     }
 
+    //删除收藏，没有用到
     private void testDel() {
         NewsApi newsApi = BombClient.getsInstance().getNewsApi();
         String newsId = newsEntity.getObjectId();
