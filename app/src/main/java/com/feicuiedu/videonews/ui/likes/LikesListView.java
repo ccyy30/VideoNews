@@ -14,9 +14,6 @@ import retrofit2.Call;
 
 /**
  * 我的收藏列表视图
- *
- * 作者：yuanchao on 2016/8/19 0019 11:50
- * 邮箱：yuanchao@feicuiedu.com
  */
 public class LikesListView extends BaseResourceView<NewsEntity,LikesItemView>{
     public LikesListView(Context context) {

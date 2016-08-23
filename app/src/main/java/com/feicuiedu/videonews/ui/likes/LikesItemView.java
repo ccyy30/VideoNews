@@ -28,8 +28,6 @@ import retrofit2.Response;
 /**
  * 收藏列表单项视图
  * <p/>
- * 作者：yuanchao on 2016/8/19 0019 11:50
- * 邮箱：yuanchao@feicuiedu.com
  */
 public class LikesItemView extends BaseItemView<NewsEntity> {
 

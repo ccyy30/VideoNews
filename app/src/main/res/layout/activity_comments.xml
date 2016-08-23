@@ -32,8 +32,8 @@
         android:layout_height="@dimen/size_300"
         android:background="@color/black"/>
 
-    <!--<feicuiedu.com.videonews.ui.comments.CommentsListView-->
-        <!--android:id="@+id/commentsListView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"/>-->
+    <com.feicuiedu.videonews.ui.comments.CommentsListView
+        android:id="@+id/commentsListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

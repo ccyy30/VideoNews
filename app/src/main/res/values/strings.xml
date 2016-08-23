@@ -38,4 +38,5 @@
     <string name="OK">确定</string>
 
     <string name="please_edit_comment">请编辑评论</string>
+    <string name="like_failure">收藏失败</string>
 </resources>
